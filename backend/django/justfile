@@ -1,0 +1,40 @@
+set dotenv-filename := ".env"
+
+GENERATED_PATH := "../../generated"
+
+@_:
+  just --list
+
+# Setup django workspace: copy .env, sync deps, bring services up, migrate, gen schema.
+setup:
+    cp -n .env.example .env || true
+    uv sync
+    docker compose up --wait
+    just migrate
+    just _generate_openapi_schema
+
+# Apply migrations and start the dev server.
+run: migrate
+    uv run manage.py runserver 0.0.0.0:8000
+
+down:
+    docker compose down
+
+migrate:
+    uv run manage.py migrate
+
+makemigrations *args:
+    uv run manage.py makemigrations {{args}}
+
+# Regenerate the OpenAPI schema consumed by the frontend codegen.
+_generate_openapi_schema:
+    uv run manage.py spectacular --color --file {{GENERATED_PATH}}/openapi-schema.yml
+
+lint:
+    just .. lint django
+
+type:
+    just .. type django
+
+test *pytest_flags:
+    just .. test django {{pytest_flags}}

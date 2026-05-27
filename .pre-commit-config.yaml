@@ -1,0 +1,19 @@
+# Pre-commit hooks. Versions for ruff/pyright/pytest live in `backend/justfile`
+# and are reused via `uv tool run` so we keep a single source of truth.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: just backend lint
+        language: system
+        pass_filenames: false
+        types_or: [python]

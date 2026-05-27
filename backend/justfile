@@ -1,0 +1,68 @@
+mod django
+mod ml
+
+# Single source of truth for QA tool versions. Sub-justfiles defer back here
+# so upgrading is a one-line change.
+RUFF_VERSION := "0.15.4"
+BASED_PYRIGHT_VERSION := "1.38.2"
+PYTEST_VERSION := "9.0.2"
+
+# Every Python project we lint / type-check / test. Append a line when you
+# add a new uv workspace member.
+PROJECT_PATHS := "django ml/algorithm ml/evaluation util"
+
+@_:
+  just --list
+
+setup:
+    just django setup
+    just ml setup
+
+[working-directory: "django"]
+run:
+    just run
+
+down:
+    just django down
+    just ml down
+
+_each command:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for path in {{PROJECT_PATHS}}; do
+        echo "→ $path"
+        cd "{{source_directory()}}/$path" && {{command}} && cd - >/dev/null
+    done
+
+# Ruff format + lint. Pass a project path to scope, e.g. `just lint ml/algorithm`.
+lint project_path="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cmd="uv tool run ruff@{{RUFF_VERSION}} format . && uv tool run ruff@{{RUFF_VERSION}} check --fix --unsafe-fixes ."
+    if [ "{{project_path}}" = "" ]; then
+        just _each "$cmd"
+    else
+        cd {{project_path}} && eval "$cmd"
+    fi
+
+# basedpyright type check, optionally scoped to a project path.
+type project_path="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cmd="uv run --with 'basedpyright=={{BASED_PYRIGHT_VERSION}}' -- basedpyright -p {{source_directory()}} ."
+    if [ "{{project_path}}" = "" ]; then
+        just _each "$cmd"
+    else
+        cd {{project_path}} && eval "$cmd"
+    fi
+
+# pytest, optionally scoped to a project path.
+test project_path="" *pytest_flags:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cmd="uv run --with 'pytest=={{PYTEST_VERSION}}' -- pytest tests {{pytest_flags}}"
+    if [ "{{project_path}}" = "" ]; then
+        just _each "$cmd"
+    else
+        cd {{project_path}} && eval "$cmd"
+    fi

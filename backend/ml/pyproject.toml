@@ -1,0 +1,10 @@
+[project]
+name = "ml"
+version = "0.1.0"
+description = "ML workspace: the algorithm container + an offline evaluation pipeline."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["algorithm", "evaluation"]

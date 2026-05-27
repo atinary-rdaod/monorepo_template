@@ -1,0 +1,14 @@
+services:
+  algorithm:
+    image: algorithm:local
+    build:
+      context: ../
+      dockerfile: ml/Dockerfile
+      args:
+        DOCKER_HUB_MIRROR: ${DOCKER_HUB_MIRROR:-}
+    networks: [app]
+
+networks:
+  app:
+    external: true
+    name: app

@@ -1,0 +1,53 @@
+# Config-only pyproject for the backend monorepo root. No [project] section —
+# this file exists so ruff and basedpyright find one shared configuration when
+# they walk up from any sub-project. All deployable units live one level
+# deeper (django/, ml/algorithm/, ml/evaluation/, util/) with their own pyproject.
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = [".venv", "typings"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # flake8-bugbear
+    "UP",    # pyupgrade
+    "C4",    # flake8-comprehensions
+    "SIM",   # flake8-simplify
+    "RUF",   # ruff-specific
+    "ANN",   # flake8-annotations
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+]
+ignore = [
+    "ANN401",   # allow `Any` — pragmatic for libraries we don't control
+    "E501",     # line length handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["ANN", "ARG"]
+"**/migrations/**" = ["ALL"]
+"__init__.py" = ["F401"]   # re-exports
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+stubPath = "typings"
+exclude = [
+    "**/__pycache__",
+    "**/.venv",
+    "**/migrations",
+    "**/node_modules",
+]
+reportMissingTypeStubs = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportUnknownParameterType = false

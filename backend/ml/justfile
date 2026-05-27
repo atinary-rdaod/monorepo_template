@@ -1,0 +1,21 @@
+@_:
+  just --list
+
+# Sync the workspace and build the algorithm container image.
+setup:
+    uv sync
+    docker compose build
+
+down:
+    docker compose down
+
+lint:
+    just .. lint ml/algorithm
+    just .. lint ml/evaluation
+
+type:
+    just .. type ml/algorithm
+    just .. type ml/evaluation
+
+test *pytest_flags:
+    just .. test ml/algorithm {{pytest_flags}}

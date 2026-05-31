@@ -2,9 +2,7 @@
 
 A minimal, opinionated template that mirrors the architecture introduced in the
 PyCon Italy 2026 talk [Simplicity Scales - Rewriting to a Django Monolith and
-a Monorepo](https://2026.pycon.it/en/event/simplicity-scales-rewriting-to-a-django-monolith-and-monorepo).
-
-[Slides](slides.pdf) | [Video recording](https://www.youtube.com/watch?v=dQw4w9WgXcQ) (coming soon)
+a Monorepo](https://2026.pycon.it/en/event/simplicity-scales-rewriting-to-a-django-monolith-and-monorepo). [Slides](slides.pdf) | [Video recording](https://www.youtube.com/watch?v=dQw4w9WgXcQ) (coming soon)
 
 ## Layout
 

@@ -1,8 +1,6 @@
 # infrastructure
 
-Infrastructure-as-code lives here. The talk's source company uses OpenTofu —
-this template includes a single example module to show the layout without
-prescribing a cloud.
+Infrastructure-as-code lives here.
 
 ```
 infrastructure/

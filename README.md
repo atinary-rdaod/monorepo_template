@@ -1,24 +1,10 @@
-# Monorepo Template
+# Monorepo Template by Atinary - PyCon Italy 2026
 
 A minimal, opinionated template that mirrors the architecture introduced in the
-PyCon Italy 2026 talk **_Simplicity Scales — Rewriting to a Django Monolith and
-Monorepo_**.
+PyCon Italy 2026 talk [Simplicity Scales - Rewriting to a Django Monolith and
+a Monorepo](https://2026.pycon.it/en/event/simplicity-scales-rewriting-to-a-django-monolith-and-monorepo).
 
-The goal is to give you a small but complete skeleton you can fork to bootstrap
-your own product:
-
-- **Django** monolith backend (`backend/django`)
-- **Machine learning** workspace with an algorithm package and an evaluation
-  package (`backend/ml`)
-- **Shared utility** Python package (`backend/util`)
-- **Centralized type stubs** (`backend/typings`)
-- **Frontend** (`frontend/`) — Vite + React + TypeScript
-- **Infrastructure as code** stub (`infrastructure/`)
-- **Generated artifacts** shared between backend and frontend (`generated/`, gitignored)
-
-It is intentionally tiny. There is no business logic; every folder demonstrates
-a pattern (workspaces, justfiles, codeowners, async tasks via Celery + Redis,
-etc.) that you can extend.
+[Slides](slides.pdf) | [Video recording](https://www.youtube.com/watch?v=dQw4w9WgXcQ) (coming soon)
 
 ## Layout
 
@@ -53,19 +39,22 @@ etc.) that you can extend.
 
 ## Getting started
 
-Requirements: [`uv`](https://docs.astral.sh/uv/), [`just`](https://github.com/casey/just),
-Docker, Node 24 (we recommend [`volta`](https://volta.sh/) or
-[`nvm`](https://github.com/nvm-sh/nvm)).
+Requirements:
+-  [uv](https://docs.astral.sh/uv/)
+-  [just](https://github.com/casey/just)
+-  Docker
+-  Node 24 (we recommend [volta](https://volta.sh/) or
+   [nvm](https://github.com/nvm-sh/nvm))
 
 ```bash
-just setup           # bootstrap everything (backend + frontend + pre-commit)
+just setup           # set everything up (backend + frontend + pre-commit)
 just backend run     # start Django + Celery worker + Postgres + Redis
 just run             # start the frontend (Vite dev server on :5173)
 ```
 
 The included demo: `POST /api/notifications/` simulates an outgoing email.
 The request returns immediately; a Celery task picks the row up, sleeps a
-couple of seconds (where you'd call a real provider), and flips the status to
+couple of seconds (where you'd call a real asynchronous task), and flips the status to
 `SENT`. The frontend polls every second so you can watch the state transition.
 
 To run every quality gate across the monorepo:
@@ -102,4 +91,4 @@ See the talk for the long version. In short:
 
 ## License
 
-MIT — feel free to use this as a starting point for your own monorepo.
+MIT — feel free to use this as a starting point for your own project.

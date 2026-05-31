@@ -47,7 +47,7 @@ export function App() {
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", padding: "2rem", maxWidth: 720 }}>
-      <h1>Monorepo template</h1>
+      <h1>Monorepo template by Atinary - PyCon Italy 2026</h1>
       <p>
         POSTs a notification to the Django API. The request returns immediately;
         a Celery worker simulates "sending" (a 2-second sleep) and flips the

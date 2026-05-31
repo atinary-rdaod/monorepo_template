@@ -3,7 +3,7 @@ mod backend
 @_:
   just --list
 
-# Bootstrap the entire monorepo (backend, frontend, pre-commit).
+# Set everything up (backend, frontend, pre-commit).
 setup:
     just backend::setup
     just frontend_setup
@@ -18,11 +18,11 @@ run:
 frontend_setup:
     npm install
 
-# Regenerate TypeScript types from the backend OpenAPI schema.
+# Regenerate TypeScript types from the Django OpenAPI schema.
 generate_types:
     just backend django _generate_openapi_schema
     cd frontend && npm run openapi
 
-# Run pre-commit hooks across the repo.
+# Run pre-commit hooks.
 pre_commit:
     uv tool run pre-commit run --all-files
